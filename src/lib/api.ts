@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/stores/auth'
-import { QueryClient } from '@tanstack/vue-query'
+import { QueryClient, useQueryClient } from '@tanstack/vue-query'
 import axios, { AxiosError } from 'axios'
-import { queryClient } from './query'
+
 import router from '@/router'
 
 type Message = string | Record<string, string> | null
@@ -39,6 +39,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   response => response,
   (error: AxiosError) => {
+    const queryClient = useQueryClient()
+
     if (error.response?.status === 401) {
       localStorage.clear()
       queryClient.clear()
