@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main class="flex flex-col gap-4">
+  <div class="container max-w-screen-2xl">
     <p>home page</p>
-  </main>
+  </div>
 </template>

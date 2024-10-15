@@ -27,35 +27,37 @@ const onSubmit = form.handleSubmit(values => {
 </script>
 
 <template>
-  <form @submit="onSubmit">
-    <FormField v-slot="{ componentField }" name="email">
-      <FormItem>
-        <FormLabel>Email</FormLabel>
-        <FormControl>
-          <Input
-            type="email"
-            placeholder="Введите email"
-            v-bind="componentField"
-          />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+  <div class="container flex items-center justify-center max-w-screen-2xl">
+    <form class="max-w-[480px] w-full flex flex-col gap-4" @submit="onSubmit">
+      <FormField v-slot="{ componentField }" name="email">
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input
+              type="email"
+              placeholder="Введите email"
+              v-bind="componentField"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
 
-    <FormField v-slot="{ componentField }" name="password">
-      <FormItem>
-        <FormLabel>Пароль</FormLabel>
-        <FormControl>
-          <Input
-            type="password"
-            placeholder="Введите пароль"
-            v-bind="componentField"
-          />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+      <FormField v-slot="{ componentField }" name="password">
+        <FormItem>
+          <FormLabel>Пароль</FormLabel>
+          <FormControl>
+            <Input
+              type="password"
+              placeholder="Введите пароль"
+              v-bind="componentField"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
 
-    <Button type="submit">Войти</Button>
-  </form>
+      <Button type="submit">Войти</Button>
+    </form>
+  </div>
 </template>

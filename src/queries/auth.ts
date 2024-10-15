@@ -7,6 +7,7 @@ import {
   signIn,
   type SignInResponse,
   type SignIn,
+  refresh,
 } from '@/services/auth'
 import { useAuthStore } from '@/stores/auth'
 import {
@@ -14,6 +15,7 @@ import {
   useQuery,
   type UseMutationReturnType,
   type UseQueryReturnType,
+  QueryClient,
 } from '@tanstack/vue-query'
 
 export const useGetCurrentUserQuery: () => UseQueryReturnType<
@@ -37,6 +39,7 @@ export const useSignInMutation: () => UseMutationReturnType<
 > = () => {
   const { data, refetch, isSuccess } = useGetCurrentUserQuery()
   const authStore = useAuthStore()
+
   return useMutation({
     mutationKey: ['auth', 'sign-in'],
     mutationFn: signIn,

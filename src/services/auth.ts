@@ -33,8 +33,12 @@ export const signIn = async ({ email, password }: SignIn) => {
 }
 
 export const refresh = async ({ refreshToken }: { refreshToken: string }) => {
-  const response =
-    await api.post<SuccessResponse<SignInResponse>>('/auth/refresh')
+  const response = await api.post<SuccessResponse<SignInResponse>>(
+    '/auth/refresh',
+    {
+      refreshToken,
+    },
+  )
 
   return response.data
 }

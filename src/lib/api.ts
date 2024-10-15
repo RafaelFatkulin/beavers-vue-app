@@ -1,3 +1,5 @@
+import router from '@/router'
+import { refresh } from '@/services/auth'
 import { useAuthStore } from '@/stores/auth'
 import { QueryClient, useQueryClient } from '@tanstack/vue-query'
 import axios, { AxiosError } from 'axios'
@@ -37,22 +39,27 @@ api.interceptors.request.use(async config => {
 
 api.interceptors.response.use(
   response => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
     console.log(error)
     console.log(error.response?.status)
 
     if (error.response?.status === 401) {
-      const scope = effectScope()
+      try {
+        const authStore = useAuthStore()
 
-      scope.run(async () => {
-        console.log('gere')
+        const refreshResponse = await refresh({
+          refreshToken: authStore.refreshToken,
+        })
 
+        authStore.updateAccessToken(refreshResponse.data.accessToken)
+        authStore.updateRefreshToken(refreshResponse.data.refreshToken)
+      } catch (refreshError) {
         localStorage.clear()
-
         queryClient.clear()
-      })
+        router.replace('/sign-in')
 
-      scope.stop()
+        return Promise.reject(refreshError)
+      }
     }
     return Promise.reject(error)
   },
