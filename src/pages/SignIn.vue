@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import type { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { useSignInMutation } from '@/queries/auth'
 import { signInSchema } from '@/services/auth'
 import { toTypedSchema } from '@vee-validate/zod'

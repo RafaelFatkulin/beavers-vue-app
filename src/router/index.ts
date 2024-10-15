@@ -1,4 +1,6 @@
+import { useGetCurrentUserQuery } from '@/queries/auth'
 import { useAuthStore } from '@/stores/auth'
+import { effectScope, watch } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -33,11 +35,24 @@ const isAuthenticated = () => {
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.path !== '/sign-in' && to.path !== '/sign-up' && !isAuthenticated()) {
+  const scope = effectScope()
+  let user = null
+
+  scope.run(() => {
+    const { data } = useGetCurrentUserQuery()
+
+    user = data.value?.data
+  })
+
+  scope.stop()
+
+  const accessToken = localStorage.getItem('access_token')
+
+  if (to.path !== '/sign-in' && to.path !== '/sign-up' && !accessToken) {
     return next('/sign-in')
   }
 
-  if ((to.path === '/sign-in' || to.path === '/sign-up') && isAuthenticated()) {
+  if ((to.path === '/sign-in' || to.path === '/sign-up') && accessToken) {
     return next('/about')
   }
 

@@ -2,7 +2,7 @@ import { useAuthStore } from '@/stores/auth'
 import { QueryClient, useQueryClient } from '@tanstack/vue-query'
 import axios, { AxiosError } from 'axios'
 
-import router from '@/router'
+import { effectScope } from 'vue'
 
 type Message = string | Record<string, string> | null
 
@@ -22,29 +22,37 @@ export const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
 
-api.interceptors.request.use(
-  async config => {
-    const modifiedConfig = { ...config }
-    const auth = useAuthStore()
+const queryClient = new QueryClient()
 
-    if (auth.accessToken) {
-      modifiedConfig.headers.Authorization = `Bearer ${auth.accessToken}`
-    }
+api.interceptors.request.use(async config => {
+  const modifiedConfig = { ...config }
+  const auth = useAuthStore()
 
-    return modifiedConfig
-  },
-  error => Promise.reject(error),
-)
+  if (auth.accessToken) {
+    modifiedConfig.headers.Authorization = `Bearer ${auth.accessToken}`
+  }
+
+  return modifiedConfig
+})
 
 api.interceptors.response.use(
   response => response,
   (error: AxiosError) => {
-    const queryClient = useQueryClient()
+    console.log(error)
+    console.log(error.response?.status)
 
     if (error.response?.status === 401) {
-      localStorage.clear()
-      queryClient.clear()
-      router.replace('/')
+      const scope = effectScope()
+
+      scope.run(async () => {
+        console.log('gere')
+
+        localStorage.clear()
+
+        queryClient.clear()
+      })
+
+      scope.stop()
     }
     return Promise.reject(error)
   },

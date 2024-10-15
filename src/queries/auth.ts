@@ -20,10 +20,12 @@ export const useGetCurrentUserQuery: () => UseQueryReturnType<
   SuccessResponse<CurrentUser>,
   Error
 > = () => {
+  const authStore = useAuthStore()
+
   return useQuery({
     queryKey: ['auth', 'current-user'],
     queryFn: getCurrentUser,
-    enabled: false,
+    enabled: !!authStore.accessToken,
   })
 }
 
@@ -48,9 +50,9 @@ export const useSignInMutation: () => UseMutationReturnType<
         toast({
           title: data.value?.data.fullName,
         })
-      }
 
-      router.replace('/about')
+        router.replace('/about')
+      }
     },
     onError(error, variables, context) {
       toast({
