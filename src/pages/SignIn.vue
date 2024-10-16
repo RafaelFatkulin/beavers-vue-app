@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import {
+  CardHeader,
+  Card,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card'
+import {
   FormControl,
   FormField,
   FormItem,
@@ -27,37 +34,43 @@ const onSubmit = form.handleSubmit(values => {
 </script>
 
 <template>
-  <div class="container flex items-center justify-center max-w-screen-2xl">
-    <form class="max-w-[480px] w-full flex flex-col gap-4" @submit="onSubmit">
-      <FormField v-slot="{ componentField }" name="email">
-        <FormItem>
-          <FormLabel>Email</FormLabel>
-          <FormControl>
-            <Input
-              type="email"
-              placeholder="Введите email"
-              v-bind="componentField"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+  <Card class="max-w-[420px] w-full">
+    <CardHeader>
+      <CardTitle>Войти</CardTitle>
+      <CardDescription>Для входа введите e-mail и пароль</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <form class="flex flex-col gap-3" @submit="onSubmit">
+        <FormField v-slot="{ componentField }" name="email">
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input
+                type="email"
+                placeholder="Введите email"
+                v-bind="componentField"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
 
-      <FormField v-slot="{ componentField }" name="password">
-        <FormItem>
-          <FormLabel>Пароль</FormLabel>
-          <FormControl>
-            <Input
-              type="password"
-              placeholder="Введите пароль"
-              v-bind="componentField"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+        <FormField v-slot="{ componentField }" name="password">
+          <FormItem>
+            <FormLabel>Пароль</FormLabel>
+            <FormControl>
+              <Input
+                type="password"
+                placeholder="Введите пароль"
+                v-bind="componentField"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
 
-      <Button type="submit">Войти</Button>
-    </form>
-  </div>
+        <Button type="submit">Войти</Button>
+      </form>
+    </CardContent>
+  </Card>
 </template>

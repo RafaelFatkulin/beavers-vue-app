@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/toast'
-import type { SuccessResponse } from '@/lib/api'
+import type { ErrorResponse, SuccessResponse } from '@/lib/api'
+import { queryClient } from '@/lib/utils'
 import router from '@/router'
 import {
   getCurrentUser,
@@ -8,6 +9,7 @@ import {
   type SignInResponse,
   type SignIn,
   refresh,
+  signOut,
 } from '@/services/auth'
 import { useAuthStore } from '@/stores/auth'
 import {
@@ -15,8 +17,9 @@ import {
   useQuery,
   type UseMutationReturnType,
   type UseQueryReturnType,
-  QueryClient,
+  type MutationFunction,
 } from '@tanstack/vue-query'
+import type { MaybeRefDeep } from 'node_modules/@tanstack/vue-query/build/modern/types'
 
 export const useGetCurrentUserQuery: () => UseQueryReturnType<
   SuccessResponse<CurrentUser>,
@@ -33,7 +36,7 @@ export const useGetCurrentUserQuery: () => UseQueryReturnType<
 
 export const useSignInMutation: () => UseMutationReturnType<
   SuccessResponse<SignInResponse>,
-  Error,
+  ErrorResponse,
   SignIn,
   unknown
 > = () => {
@@ -50,16 +53,38 @@ export const useSignInMutation: () => UseMutationReturnType<
       await refetch()
 
       if (data.value?.data) {
-        toast({
-          title: data.value?.data.fullName,
-        })
-
-        router.replace('/about')
+        router.replace('/dashboard')
       }
     },
     onError(error, variables, context) {
       toast({
-        title: error.response.data.message,
+        title: error?.response?.data.message as string,
+      })
+    },
+  })
+}
+
+export const useSignOutMutation: () => UseMutationReturnType<
+  SuccessResponse<null>,
+  ErrorResponse,
+  { refreshToken: string },
+  unknown
+> = () => {
+  const authStore = useAuthStore()
+
+  return useMutation({
+    mutationKey: ['auth', 'sign-out'],
+    mutationFn: async () =>
+      await signOut({ refreshToken: authStore.refreshToken }),
+    onSuccess: async ({ message }) => {
+      authStore.$reset()
+      localStorage.clear()
+      queryClient.removeQueries()
+      await router.replace('/sign-in')
+    },
+    onError(error) {
+      toast({
+        title: error?.response?.data.message as string,
       })
     },
   })

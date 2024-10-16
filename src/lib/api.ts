@@ -5,6 +5,7 @@ import { QueryClient, useQueryClient } from '@tanstack/vue-query'
 import axios, { AxiosError } from 'axios'
 
 import { effectScope } from 'vue'
+import { queryClient } from './utils'
 
 type Message = string | Record<string, string> | null
 
@@ -14,17 +15,15 @@ export type SuccessResponse<T> = {
   message: Message
 }
 
-export type ErrorResponse = {
+export type ErrorResponse = AxiosError<{
   success: boolean
   data?: null
   message: Message
-}
+}>
 
 export const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
-
-const queryClient = new QueryClient()
 
 api.interceptors.request.use(async config => {
   const modifiedConfig = { ...config }

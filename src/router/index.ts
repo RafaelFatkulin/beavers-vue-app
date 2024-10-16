@@ -1,6 +1,5 @@
 import { useGetCurrentUserQuery } from '@/queries/auth'
-import { useAuthStore } from '@/stores/auth'
-import { effectScope, watch } from 'vue'
+import { effectScope } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -8,31 +7,43 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/pages/HomeView.vue'),
+      component: () => import('@/layouts/TheAuthLayout.vue'),
+      children: [
+        {
+          path: '/sign-in',
+          name: 'sign-in',
+          component: () => import('@/pages/SignIn.vue'),
+        },
+      ],
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('@/pages/AboutView.vue'),
-    },
-    {
-      path: '/sign-in',
-      name: 'sign-in',
-      component: () => import('@/pages/SignIn.vue'),
-    },
-    {
-      path: '/sign-up',
-      name: 'sign-up',
-      component: () => import('@/pages/SignUp.vue'),
+      path: '/dashboard',
+      component: () => import('@/layouts/TheDashboardLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: () => import('@/pages/HomeView.vue'),
+          meta: {
+            type: 'dashboard',
+            title: 'Главная',
+            order: 1,
+          },
+        },
+        {
+          path: 'about',
+          name: 'about',
+          component: () => import('@/pages/AboutView.vue'),
+          meta: {
+            type: 'dashboard',
+            title: 'О нас',
+            order: 2,
+          },
+        },
+      ],
     },
   ],
 })
-
-const isAuthenticated = () => {
-  const auth = useAuthStore()
-  return !!auth.accessToken
-}
 
 router.beforeEach((to, from, next) => {
   const scope = effectScope()
@@ -48,12 +59,12 @@ router.beforeEach((to, from, next) => {
 
   const accessToken = localStorage.getItem('access_token')
 
-  if (to.path !== '/sign-in' && to.path !== '/sign-up' && !accessToken) {
+  if (to.path !== '/sign-in' && !accessToken) {
     return next('/sign-in')
   }
 
-  if ((to.path === '/sign-in' || to.path === '/sign-up') && accessToken) {
-    return next('/about')
+  if (to.path === '/sign-in' && accessToken) {
+    return next('/dashboard')
   }
 
   next()

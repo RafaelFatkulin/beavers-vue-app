@@ -12,12 +12,13 @@ module.exports = {
     './app/**/*.{ts,tsx,vue}',
     './src/**/*.{ts,tsx,vue}',
     './src/*.{ts,tsx,vue}',
+    'index.html',
   ],
 
   theme: {
     container: {
       center: true,
-      padding: '2rem',
+      padding: '1rem',
       screens: {
         '2xl': '1400px',
       },

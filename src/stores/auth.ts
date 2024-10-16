@@ -13,5 +13,16 @@ export const useAuthStore = defineStore('auth', () => {
     refreshToken.value = value
   }
 
-  return { accessToken, refreshToken, updateAccessToken, updateRefreshToken }
+  const $reset = () => {
+    accessToken.value = ''
+    refreshToken.value = ''
+  }
+
+  return {
+    accessToken,
+    refreshToken,
+    updateAccessToken,
+    updateRefreshToken,
+    $reset,
+  }
 })
