@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { UserNav } from '@/components/user-nav'
+import { ThemeToggler } from '@/components/theme-toggler'
 
 const router = useRouter()
 
@@ -33,7 +34,10 @@ const links = router
         </RouterLink>
       </nav>
 
-      <UserNav />
+      <div class="flex flex-row items-center gap-4">
+        <ThemeToggler />
+        <UserNav />
+      </div>
     </div>
   </header>
 

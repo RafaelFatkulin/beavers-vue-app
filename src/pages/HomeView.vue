@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="container max-w-screen-2xl">
-    <p>home page</p>
+  <div class="px-4">
+    <p>Страница "Главная"</p>
   </div>
 </template>
