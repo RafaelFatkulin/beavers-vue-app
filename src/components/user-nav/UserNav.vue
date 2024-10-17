@@ -70,7 +70,7 @@ const { mutate, isPending: isSignOutPending } = useSignOutMutation()
             v-if="isSignOutPending"
             class="w-4 h-4 animate-spin text-primary"
           />
-          <LogOutIcon class="w-4 h-4" /> Выйти
+          <LogOutIcon class="w-4 h-4" v-else /> Выйти
         </button>
       </DropdownMenuItem>
     </DropdownMenuContent>

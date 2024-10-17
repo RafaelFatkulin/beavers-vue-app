@@ -8,7 +8,6 @@ import {
   signIn,
   type SignInResponse,
   type SignIn,
-  refresh,
   signOut,
 } from '@/services/auth'
 import { useAuthStore } from '@/stores/auth'
@@ -17,9 +16,7 @@ import {
   useQuery,
   type UseMutationReturnType,
   type UseQueryReturnType,
-  type MutationFunction,
 } from '@tanstack/vue-query'
-import type { MaybeRefDeep } from 'node_modules/@tanstack/vue-query/build/modern/types'
 
 export const useGetCurrentUserQuery: () => UseQueryReturnType<
   SuccessResponse<CurrentUser>,
@@ -56,9 +53,17 @@ export const useSignInMutation: () => UseMutationReturnType<
         router.replace('/dashboard')
       }
     },
-    onError(error, variables, context) {
+    onError(error) {
+      if (error.code === 'ERR_NETWORK') {
+        return toast({
+          title: 'Ошибка подключения',
+          variant: 'destructive',
+        })
+      }
+
       toast({
         title: error?.response?.data.message as string,
+        variant: 'destructive',
       })
     },
   })

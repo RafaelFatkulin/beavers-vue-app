@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input'
 import { useSignInMutation } from '@/queries/auth'
 import { signInSchema } from '@/services/auth'
 import { toTypedSchema } from '@vee-validate/zod'
+import { Loader2Icon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 
 const formSchema = toTypedSchema(signInSchema)
@@ -26,7 +27,7 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
-const { mutate } = useSignInMutation()
+const { mutate, isPending } = useSignInMutation()
 
 const onSubmit = form.handleSubmit(values => {
   mutate(values)
@@ -69,7 +70,13 @@ const onSubmit = form.handleSubmit(values => {
           </FormItem>
         </FormField>
 
-        <Button type="submit">Войти</Button>
+        <Button type="submit" :disabled="isPending">
+          <Loader2Icon
+            v-if="isPending"
+            class="animate-spin w-5 h-5 text-white"
+          />
+          <span v-else>Войти</span>
+        </Button>
       </form>
     </CardContent>
   </Card>

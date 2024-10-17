@@ -2,6 +2,8 @@ import { useGetCurrentUserQuery } from '@/queries/auth'
 import { effectScope } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { HomeIcon, InfoIcon } from 'lucide-vue-next'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -27,6 +29,7 @@ const router = createRouter({
           meta: {
             type: 'dashboard',
             title: 'Главная',
+            icon: HomeIcon,
             order: 1,
           },
         },
@@ -37,6 +40,7 @@ const router = createRouter({
           meta: {
             type: 'dashboard',
             title: 'О нас',
+            icon: InfoIcon,
             order: 2,
           },
         },
