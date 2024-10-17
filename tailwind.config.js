@@ -24,6 +24,9 @@ module.exports = {
       },
     },
     extend: {
+      transitionProperty: {
+        width: 'width',
+      },
       fontFamily: {
         inter: ['"Inter"', 'sans-serif'],
       },
