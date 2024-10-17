@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { UserNav } from '@/components/user-nav'
+import { ThemeToggler } from '@/components/theme-toggler'
 
 const router = useRouter()
 
@@ -19,22 +20,22 @@ const links = router
   <header
     class="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-lg border-border"
   >
-    <div class="flex items-center justify-end py-4 px-6">
+    <div class="flex items-center justify-end px-6 py-4">
       <UserNav />
     </div>
   </header>
 
-  <main class="flex-1 flex flex-row">
+  <main class="flex flex-row flex-1">
     <aside class="p-4 border-r">
-      <nav class="flex flex-col text-sm font-medium gap-2">
+      <nav class="flex flex-col gap-2 text-sm font-medium">
         <RouterLink
           v-for="link in links"
-          class="transition-colors hover:text-foreground/80 text-foreground/60 flex flex-row items-center gap-2"
+          class="flex flex-row items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
           exact-active-class="text-primary"
           :to="link.path"
         >
           <component
-            class="h-5 w-5"
+            class="w-5 h-5"
             v-if="link.meta.icon"
             :is="link.meta.icon"
           />
