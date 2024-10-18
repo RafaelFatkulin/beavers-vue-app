@@ -1,11 +1,7 @@
-import { defineStore } from 'pinia'
 import { useLocalStorage, type RemovableRef } from '@vueuse/core'
 
-export const useAsideStore = defineStore('aside', () => {
-  const isCollapsed: RemovableRef<boolean> = useLocalStorage(
-    'is-collapsed',
-    false,
-  )
+export const useAsideStore = () => {
+  const isCollapsed = useLocalStorage<boolean>('aside', false)
 
   const toggle = () => {
     isCollapsed.value = !isCollapsed.value
@@ -15,4 +11,4 @@ export const useAsideStore = defineStore('aside', () => {
     isCollapsed,
     toggle,
   }
-})
+}

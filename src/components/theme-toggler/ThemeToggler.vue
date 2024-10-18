@@ -23,10 +23,10 @@ const handleTheme = () => {
 <template>
   <Button variant="ghost" size="icon" class="rounded-full" @click="handleTheme">
     <MoonIcon
-      class="w-6 h-6 transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0"
+      class="w-5 h-5 transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0"
     />
     <SunIcon
-      class="absolute w-6 h-6 transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100"
+      class="absolute w-5 h-5 transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100"
     />
     <span class="sr-only">Toggle theme</span>
   </Button>

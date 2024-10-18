@@ -6,6 +6,10 @@ module.exports = {
   safelist: ['dark'],
   prefix: '',
 
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
+
   content: [
     './pages/**/*.{ts,tsx,vue}',
     './components/**/*.{ts,tsx,vue}',

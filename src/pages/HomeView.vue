@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-4">
-    <p>Страница "Главная"</p>
+  <div>
+    <h1>Страница "Главная"</h1>
   </div>
 </template>
